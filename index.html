@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - JPGPay</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Plus+Jakarta+Sans:wght@400;600;750;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f3f7f6;
+            user-select: none;
+        }
+        .jpg-font {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen md:bg-gray-900">
+
+    <div class="relative w-full max-w-md h-screen md:h-[880px] md:rounded-[36px] bg-[#f4f7f9] md:shadow-2xl overflow-hidden flex flex-col p-6 justify-between">
+        
+        <div class="flex flex-col items-center mt-12">
+            <!-- Exact crisp vector logo replicated -->
+            <div class="w-36 h-36 bg-white rounded-3xl shadow-sm flex flex-col justify-center items-center border border-gray-100">
+                <div class="w-16 h-16">
+                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                        <rect x="15" y="35" width="5" height="5" fill="#f25f22" />
+                        <rect x="22" y="28" width="5" height="5" fill="#f25f22" />
+                        <rect x="22" y="42" width="5" height="5" fill="#f25f22" />
+                        <rect x="15" y="51" width="5" height="5" fill="#f25f22" />
+                        <rect x="29" y="35" width="5" height="5" fill="#1e2530" />
+                        <rect x="29" y="49" width="5" height="5" fill="#1e2530" />
+                        <rect x="22" y="57" width="5" height="5" fill="#f25f22" />
+                        <rect x="29" y="63" width="5" height="5" fill="#f25f22" />
+                        <rect x="36" y="42" width="5" height="5" fill="#1e2530" />
+                        <rect x="36" y="56" width="5" height="5" fill="#1e2530" />
+                        <rect x="44" y="27" width="46" height="40" rx="7" fill="#1e2530" />
+                        <rect x="73" y="39" width="16" height="14" rx="3" fill="#f25f22" />
+                        <path d="M77 46 l2.5 2.5 l5 -5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                        <line x1="44" y1="38" x2="52" y2="38" stroke="white" stroke-width="2" />
+                        <line x1="44" y1="47" x2="52" y2="47" stroke="white" stroke-width="2" />
+                        <line x1="44" y1="56" x2="52" y2="56" stroke="white" stroke-width="2" />
+                    </svg>
+                </div>
+                <span class="jpg-font text-2xl text-[#f25f22] tracking-wider block">JPG</span>
+                <span class="text-[10px] font-extrabold text-[#1e2530] tracking-[0.35em] block -mt-1 ml-1">PAY</span>
+            </div>
+            <h2 class="text-gray-500 font-bold text-base mt-4">JPGPay</h2>
+        </div>
+
+        <div class="space-y-4 mt-4">
+            <!-- Toast error -->
+            <div id="error-toast" class="hidden bg-red-100 border border-red-200 text-red-700 text-xs px-4 py-3 rounded-xl flex items-center space-x-2">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="error-text"></span>
+            </div>
+
+            <!-- Phone Section -->
+            <div class="flex items-center bg-white border border-gray-200 rounded-full px-5 py-3.5 shadow-sm">
+                <i class="fa-regular fa-user text-gray-400 mr-3.5 text-lg"></i>
+                <input type="tel" id="login-phone" placeholder="Phone" maxlength="10" class="w-full bg-transparent outline-none text-gray-700 text-sm tracking-widest">
+            </div>
+
+            <!-- Password Section -->
+            <div class="flex items-center bg-white border border-gray-200 rounded-full px-5 py-3.5 shadow-sm">
+                <i class="fa-solid fa-lock text-gray-400 mr-3.5 text-lg"></i>
+                <input type="password" id="login-pass" placeholder="Password" class="w-full bg-transparent outline-none text-gray-700 text-sm">
+            </div>
+
+            <!-- Options Row -->
+            <div class="flex justify-between items-center text-xs px-2.5">
+                <a href="register.html" class="text-[#0a8f5c] font-bold hover:underline">Register</a>
+                <label class="flex items-center space-x-2 text-gray-500 cursor-pointer">
+                    <input type="checkbox" id="remember-me" class="w-4 h-4 rounded-full border-gray-300 text-emerald-600 focus:ring-emerald-500">
+                    <span>Remember Me</span>
+                </label>
+            </div>
+
+            <div class="flex items-center space-x-2.5 text-xs px-2.5 pt-2">
+                <input type="checkbox" id="agree-privacy" checked class="w-4 h-4 rounded-full border-gray-300 text-emerald-600 focus:ring-emerald-500">
+                <label for="agree-privacy" class="text-gray-500">Agree <span class="text-[#0a8f5c] underline font-semibold">"User Privacy Agreement"</span></label>
+            </div>
+
+            <!-- Sign In Action -->
+            <button id="signin-btn" onclick="handleSignIn()" class="w-full bg-[#0a8f5c] hover:bg-[#008652] text-white font-bold py-4 rounded-full shadow-lg transition-all text-center block text-sm tracking-wide mt-6">
+                Sign In
+            </button>
+
+            <div class="text-center pt-2">
+                <a href="forget.html" class="text-xs text-[#0a8f5c] font-bold hover:underline">Forget Password</a>
+            </div>
+        </div>
+
+        <div class="text-center text-xs text-gray-400 mt-auto pt-4">v1.0.1</div>
+    </div>
+
+    <!-- Script Handling Authentication login flow with DB checks -->
+    <script type="module">
+        import { db, doc, getDoc } from "./services/firebase-config.js";
+
+        const phoneInp = document.getElementById('login-phone');
+        const passInp = document.getElementById('login-pass');
+        const rememberCheck = document.getElementById('remember-me');
+
+        // Check for Auto Login (If already session exist)
+        if (sessionStorage.getItem("isLoggedIn") === "true") {
+            window.location.href = "dashboard.html";
+        }
+
+        // Check if LocalStorage has RememberMe data cached
+        document.addEventListener("DOMContentLoaded", () => {
+            const cachedPhone = localStorage.getItem("cached_phone");
+            const cachedPass = localStorage.getItem("cached_pass");
+            if (cachedPhone && cachedPass) {
+                phoneInp.value = cachedPhone;
+                passInp.value = cachedPass;
+                rememberCheck.checked = true;
+            }
+        });
+
+        // Numeric lock keyboard restriction
+        phoneInp.addEventListener('input', () => {
+            phoneInp.value = phoneInp.value.replace(/[^0-9]/g, '');
+        });
+
+        // Handler Login Checks
+        window.handleSignIn = async () => {
+            const phone = phoneInp.value.trim();
+            const password = passInp.value;
+            const agree = document.getElementById('agree-privacy').checked;
+
+            if (!agree) {
+                showError("Please agree to the User Privacy Agreement.");
+                return;
+            }
+            if (phone.length !== 10) {
+                showError("Please enter a valid 10-digit phone number.");
+                return;
+            }
+            if (password.length < 6) {
+                showError("Invalid password format.");
+                return;
+            }
+
+            try {
+                // Read from database directly (Saving costs of OTP)
+                const userDocRef = doc(db, "users", phone);
+                const userSnap = await getDoc(userDocRef);
+
+                if (userSnap.exists()) {
+                    const userData = userSnap.data();
+                    
+                    if (userData.password === password) {
+                        // User Verified!
+                        if (rememberCheck.checked) {
+                            localStorage.setItem("cached_phone", phone);
+                            localStorage.setItem("cached_pass", password);
+                        } else {
+                            localStorage.removeItem("cached_phone");
+                            localStorage.removeItem("cached_pass");
+                        }
+
+                        // Store current user session validation
+                        sessionStorage.setItem("isLoggedIn", "true");
+                        sessionStorage.setItem("userPhone", phone);
+
+                        window.location.href = "dashboard.html";
+                    } else {
+                        showError("Incorrect password. Please try again.");
+                    }
+                } else {
+                    showError("No user found with this phone number.");
+                }
+            } catch (err) {
+                showError("Database connection failed: " + err.message);
+            }
+        };
+
+        function showError(msg) {
+            const toast = document.getElementById('error-toast');
+            const text = document.getElementById('error-text');
+            toast.classList.remove('hidden');
+            text.innerText = msg;
+        }
+    </script>
+</body>
+</html>
