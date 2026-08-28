@@ -20,12 +20,12 @@ import {
 
 // REPLACE THESE KEYS WITH YOUR FIREBASE CONFIG COPED IN NOTEPAD
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyD8P7R9VgKpmb45kVqpdxkCJexjJ5AQP7E",
+    authDomain: "webapps-983db.firebaseapp.com",
+    projectId: "webapps-983db",
+    storageBucket: "webapps-983db.firebasestorage.app",
+    messagingSenderId: "582018608677",
+    appId: "1:582018608677:web:4845e224d54b25415f59cc"
 };
 
 // Initialize app & modules
