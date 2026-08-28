@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - JPGPay</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f3f7f6;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Hide scrollbar completely to look native */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen md:bg-gray-900">
+
+    <!-- Mobile Screen Wrapper Simulator -->
+    <div class="relative w-full max-w-md h-screen md:h-[880px] md:rounded-[36px] bg-[#f4f7f9] md:shadow-2xl overflow-hidden flex flex-col border border-gray-100">
+        
+        <!-- Global Dynamic Toast Notification System -->
+        <div id="global-toast" class="absolute top-6 left-1/2 -translate-x-1/2 z-50 transform -translate-y-20 transition-all duration-300 pointer-events-none">
+            <div class="bg-slate-800 text-white text-xs font-bold px-5 py-3 rounded-full shadow-lg flex items-center space-x-2 border border-slate-700/50">
+                <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
+                <span id="toast-message">Task Claimed Successfully!</span>
+            </div>
+        </div>
+
+        <!-- MAIN SCROLLABLE APP SCREENS CONTAINER -->
+        <div id="main-scroll-container" class="flex-1 overflow-y-auto no-scrollbar pb-24">
+
+            <!-- ================= SUB TAB 1: HOME DASHBOARD ================= -->
+            <div id="tab-home" class="tab-content p-5 space-y-5">
+                <!-- User Meta Profile -->
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center border border-white shadow-sm overflow-hidden">
+                            <i class="fa-solid fa-user text-blue-500 text-xl mt-1.5"></i>
+                        </div>
+                        <div>
+                            <h4 id="home-username" class="text-base font-bold text-slate-800 leading-tight">...</h4>
+                            <div class="flex items-center space-x-1.5 text-gray-400 text-[10px]">
+                                <span>ID: <span id="home-uid">...</span></span>
+                                <button onclick="copyToClipboard('home-uid')" class="text-[#0a8f5c] active:scale-75 transition-all"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-600 shadow-sm relative">
+                        <i class="fa-regular fa-bell text-lg"></i>
+                        <span class="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                    </button>
+                </div>
+
+                <!-- Green Balance Master Card -->
+                <div class="relative bg-[#008652] text-white rounded-3xl p-6 shadow-xl overflow-hidden">
+                    <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-blue-500 rounded-full opacity-35 filter blur-xl"></div>
+                    <div class="absolute -right-2 -top-6 w-28 h-28 bg-yellow-400 rounded-full opacity-40 filter blur-xl"></div>
+                    
+                    <span class="text-emerald-100 text-xs font-semibold">Available Balance</span>
+                    <div class="flex items-baseline space-x-1.5 mt-2 mb-4">
+                        <span class="text-2xl font-bold">₹</span>
+                        <span id="home-balance" class="text-4xl font-extrabold tracking-tight">0.00</span>
+                    </div>
+                    <button onclick="switchTab('my')" class="bg-white text-[#008652] text-xs font-bold px-6 py-2.5 rounded-full shadow-md active:scale-95 transition-all absolute right-5 bottom-5">Detail</button>
+                </div>
+
+                <!-- Deposit & Withdrawal Sub-cards -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-4 rounded-2xl relative overflow-hidden flex flex-col shadow-sm">
+                        <span class="text-[11px] text-blue-100 font-bold flex items-center"><i class="fa-solid fa-arrow-up-long mr-1.5 text-emerald-300"></i> Deposit</span>
+                        <span class="text-lg font-bold mt-1.5">₹ 0</span>
+                        <div class="absolute -right-3 -bottom-3 w-12 h-12 bg-white/10 rounded-full"></div>
+                    </div>
+                    <div class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-4 rounded-2xl relative overflow-hidden flex flex-col shadow-sm">
+                        <span class="text-[11px] text-emerald-100 font-bold flex items-center"><i class="fa-solid fa-arrow-down-long mr-1.5 text-rose-300"></i> Withdrawal</span>
+                        <span class="text-lg font-bold mt-1.5">₹ 0</span>
+                        <div class="absolute -right-3 -bottom-3 w-12 h-12 bg-white/10 rounded-full"></div>
+                    </div>
+                </div>
+
+                <!-- Action grid with USDT tag matching Screenshot 6 -->
+                <div class="grid grid-cols-4 gap-2.5 pt-1">
+                    <button class="flex flex-col items-center justify-center p-3 bg-white rounded-2xl shadow-sm border border-gray-100 relative active:scale-95 transition-all">
+                        <span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-[8px] px-1.5 py-0.5 rounded-full font-bold whitespace-nowrap">109INR</span>
+                        <div class="w-10 h-10 bg-emerald-50 text-[#008652] rounded-xl flex items-center justify-center mb-1 text-lg">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700">USDT</span>
+                    </button>
+                    <button onclick="switchTab('payment')" class="flex flex-col items-center justify-center p-3 bg-white rounded-2xl shadow-sm border border-gray-100 active:scale-95 transition-all">
+                        <div class="w-10 h-10 bg-indigo-50 text-indigo-500 rounded-xl flex items-center justify-center mb-1 text-lg">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700">Task</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-3 bg-white rounded-2xl shadow-sm border border-gray-100 active:scale-95 transition-all">
+                        <div class="w-10 h-10 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center mb-1 text-lg">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700">Team</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-3 bg-white rounded-2xl shadow-sm border border-gray-100 active:scale-95 transition-all">
+                        <div class="w-10 h-10 bg-purple-50 text-purple-500 rounded-xl flex items-center justify-center mb-1 text-lg">
+                            <i class="fa-solid fa-receipt"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700">Order</span>
+                    </button>
+                </div>
+
+                <!-- Transaction Log Row -->
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center px-1">
+                        <h5 class="font-bold text-slate-800 text-xs">Transactions</h5>
+                        <button class="text-xs text-[#0a8f5c] font-bold">See All</button>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-50 flex justify-between items-center">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-9 h-9 rounded-full bg-red-50 text-red-500 flex items-center justify-center">
+                                <i class="fa-solid fa-arrow-down text-sm"></i>
+                            </div>
+                            <div>
+                                <h6 class="font-bold text-slate-800 text-xs">Deposit INR</h6>
+                                <span class="text-[9px] text-gray-400">2026-08-23 11:50:25</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-bold text-slate-800 block text-xs">₹ 2400.00</span>
+                            <span class="inline-block bg-red-100 text-red-600 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider mt-0.5">Close</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= SUB TAB 2: PAYMENT TASKS ================= -->
+            <div id="tab-payment" class="tab-content hidden p-5 space-y-4">
+                <h3 class="text-lg font-bold text-[#0a8f5c] text-center">Payment</h3>
+
+                <!-- Active Balance Card -->
+                <div class="bg-[#008652] text-white rounded-3xl p-5 shadow-lg relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 w-28 h-28 bg-yellow-400 rounded-full opacity-30 filter blur-lg"></div>
+                    <span class="text-[10px] text-emerald-100 font-bold uppercase tracking-wider">Cashback</span>
+                    <h2 class="text-3xl font-extrabold mt-1">4.2%</h2>
+                    
+                    <div class="grid grid-cols-3 gap-2 mt-5">
+                        <div class="bg-emerald-900/40 p-2 rounded-xl text-center">
+                            <span class="text-[9px] text-emerald-100 block">Balance</span>
+                            <span class="font-bold text-sm">∫ <span class="payment-val">0</span></span>
+                        </div>
+                        <div class="bg-emerald-900/40 p-2 rounded-xl text-center">
+                            <span class="text-[9px] text-emerald-100 block">Reward</span>
+                            <span id="payment-reward" class="font-bold text-sm">∫ 0</span>
+                        </div>
+                        <div class="bg-emerald-900/40 p-2 rounded-xl text-center">
+                            <span class="text-[9px] text-emerald-100 block">Pending</span>
+                            <span class="font-bold text-sm">∫ 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 border border-amber-100 rounded-xl p-3 text-[10px] text-amber-700 flex items-start space-x-2">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5"></i>
+                    <span>Please use Freecharge or Mobikwik or Paytm wallet for payment!</span>
+                </div>
+
+                <!-- Categories -->
+                <div class="flex space-x-2 overflow-x-auto no-scrollbar py-1">
+                    <span class="bg-[#008652] text-white px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap cursor-pointer">Top Picks</span>
+                    <span class="bg-white border border-gray-200 text-gray-500 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap cursor-pointer">500-1999</span>
+                    <span class="bg-white border border-gray-200 text-gray-500 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap cursor-pointer">2000-4999</span>
+                </div>
+
+                <!-- Dynamically actionable Claim Lists -->
+                <div class="space-y-3">
+                    <!-- Task Item 1 -->
+                    <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex justify-between items-center transition-all" id="task-card-1">
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-slate-800 text-sm">INR</span>
+                                <span class="bg-slate-50 text-slate-500 text-[10px] font-mono px-2 py-0.5 rounded border border-gray-100">zLnUJI</span>
+                            </div>
+                            <div class="mt-2 text-xs">
+                                <p class="text-gray-500">Amount: <span class="text-slate-800 font-bold">∫ 600</span></p>
+                                <p class="text-red-500 font-bold">Income: +25.2</p>
+                            </div>
+                        </div>
+                        <button id="claim-btn-1" onclick="claimCommission(1, 25.2)" class="bg-[#008652] text-white px-6 py-2 rounded-full text-xs font-bold active:scale-95 transition-all shadow-md shadow-emerald-700/10">Claim</button>
+                    </div>
+
+                    <!-- Task Item 2 -->
+                    <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex justify-between items-center transition-all" id="task-card-2">
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-slate-800 text-sm">INR</span>
+                                <span class="bg-slate-50 text-slate-500 text-[10px] font-mono px-2 py-0.5 rounded border border-gray-100">otwyap</span>
+                            </div>
+                            <div class="mt-2 text-xs">
+                                <p class="text-gray-500">Amount: <span class="text-slate-800 font-bold">∫ 440</span></p>
+                                <p class="text-red-500 font-bold">Income: +18.48</p>
+                            </div>
+                        </div>
+                        <button id="claim-btn-2" onclick="claimCommission(2, 18.48)" class="bg-[#008652] text-white px-6 py-2 rounded-full text-xs font-bold active:scale-95 transition-all shadow-md shadow-emerald-700/10">Claim</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= SUB TAB 3: TOOLS PANEL ================= -->
+            <div id="tab-tool" class="tab-content hidden p-5 space-y-4">
+                <h3 class="text-lg font-bold text-[#0a8f5c] text-center">Tool</h3>
+
+                <div class="space-y-3" id="tools-rendered-list">
+                    <!-- Standard pre-loaded tools with "Failed" tag status matching Screenshot 8 -->
+                    <div class="bg-[#008652] text-white p-4.5 rounded-3xl relative overflow-hidden flex justify-between items-center shadow-sm">
+                        <div class="space-y-1 relative z-10">
+                            <h4 class="font-bold text-sm">Paytm Business</h4>
+                            <p class="text-xs text-emerald-100 font-mono">paytm.s2spfk6@pty</p>
+                            <p class="text-[9px] text-emerald-100 opacity-75">LimitedRange: 10.00~100000.00</p>
+                        </div>
+                        <span class="bg-red-500/95 text-white text-[10px] font-bold px-3.5 py-1 rounded-full uppercase shadow-sm">Failed</span>
+                    </div>
+
+                    <div class="bg-[#008652] text-white p-4.5 rounded-3xl relative overflow-hidden flex justify-between items-center shadow-sm">
+                        <div class="space-y-1 relative z-10">
+                            <h4 class="font-bold text-sm">Mobikwik</h4>
+                            <p class="text-xs text-emerald-100 font-mono">6003030441@mbkns</p>
+                            <p class="text-[9px] text-emerald-100 opacity-75">LimitedRange: 10.00~100000.00</p>
+                        </div>
+                        <span class="bg-red-500/95 text-white text-[10px] font-bold px-3.5 py-1 rounded-full uppercase shadow-sm">Failed</span>
+                    </div>
+
+                    <div class="bg-[#008652] text-white p-4.5 rounded-3xl relative overflow-hidden flex justify-between items-center shadow-sm" id="freecharge-card-state">
+                        <div class="space-y-1 relative z-10">
+                            <h4 class="font-bold text-sm">Freecharge</h4>
+                            <p class="text-xs text-emerald-100 font-mono" id="freecharge-upi-text">6003030441@freecharge</p>
+                            <p class="text-[9px] text-emerald-100 opacity-75">LimitedRange: 10.00~100000.00</p>
+                        </div>
+                        <span id="freecharge-status-tag" class="bg-red-500/95 text-white text-[10px] font-bold px-3.5 py-1 rounded-full uppercase shadow-sm">Failed</span>
+                    </div>
+                </div>
+
+                <button onclick="showSubScreen('add-tool')" class="w-full bg-[#008652] hover:bg-emerald-800 text-white font-bold py-3.5 rounded-full shadow-lg text-center block mt-6 text-sm">
+                    Add
+                </button>
+            </div>
+
+            <!-- ================= SUB TAB 4: STATISTICS PANEL ================= -->
+            <div id="tab-statistics" class="tab-content hidden p-5 space-y-4">
+                <h3 class="text-lg font-bold text-[#0a8f5c] text-center">Statistics</h3>
+
+                <div class="bg-white rounded-3xl p-5 border border-gray-100 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <span class="font-bold text-slate-800 text-xs">Statistics <span class="text-[10px] text-gray-400 font-medium ml-1.5">(28/08/2026)</span></span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3.5">
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-gray-100">
+                            <span class="text-[10px] text-gray-400 font-medium block">Balance</span>
+                            <span class="text-sm font-bold text-slate-800">₹ <span class="payment-val">0</span></span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-gray-100">
+                            <span class="text-[10px] text-gray-400 font-medium block">Sell</span>
+                            <span class="text-sm font-bold text-slate-800">₹ 0.00</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-gray-100">
+                            <span class="text-[10px] text-gray-400 font-medium block">Deposit</span>
+                            <span class="text-sm font-bold text-slate-800">₹ 0.00</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-gray-100">
+                            <span class="text-[10px] text-gray-400 font-medium block">Commission</span>
+                            <span id="stats-commission" class="text-sm font-bold text-emerald-600">₹ 0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t space-y-3">
+                        <div class="flex justify-between items-center text-xs bg-emerald-50 text-emerald-800 font-bold px-3 py-2 rounded-lg border border-emerald-100">
+                            <span>Real Time Exchange Rates(INR/USDT)</span>
+                            <span class="font-bold text-emerald-600">109</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
+                                <span class="text-[9px] text-gray-400 block">In Process Amount</span>
+                                <span class="font-bold text-slate-800 text-xs">₹ 0.00</span>
+                            </div>
+                            <div class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
+                                <span class="text-[9px] text-gray-400 block">In Process Orders</span>
+                                <span class="font-bold text-slate-800 text-xs">0</span>
+                            </div>
+                            <div class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
+                                <span class="text-[9px] text-gray-400 block">Commission Rate</span>
+                                <span class="font-bold text-emerald-600 text-xs">4.20 %</span>
+                            </div>
+                            <div class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
+                                <span class="text-[9px] text-gray-400 block">Estimated Income</span>
+                                <span id="stats-est-income" class="font-bold text-slate-800 text-xs">₹ 0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="w-full bg-[#fbc02d] text-slate-800 font-bold py-3.5 rounded-full shadow shadow-yellow-500/10 text-center block mt-2 text-xs uppercase tracking-wider">
+                    Closed Selling
+                </button>
+            </div>
+
+            <!-- ================= SUB TAB 5: MY ASSETS ================= -->
+            <div id="tab-my" class="tab-content hidden p-5 space-y-5">
+                <h3 class="text-lg font-bold text-[#0a8f5c] text-center">My Asset</h3>
+
+                <div class="bg-white rounded-3xl p-5 shadow-sm border border-gray-150">
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="text-center py-1">
+                            <span class="text-[10px] text-gray-400 block">Deposit</span>
+                            <span class="font-bold text-sm text-slate-800">₹ 0</span>
+                        </div>
+                        <div class="text-center py-1 border-x border-gray-100">
+                            <span class="text-[10px] text-gray-400 block">Withdraw</span>
+                            <span class="font-bold text-sm text-slate-800">₹ 0</span>
+                        </div>
+                        <div class="text-center py-1">
+                            <span class="text-[10px] text-gray-400 block">Commission</span>
+                            <span id="my-commission-total" class="font-bold text-sm text-slate-800">₹ 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3.5 pt-1">
+                    <button class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl shadow-sm border border-gray-50/50 active:scale-95 transition-all">
+                        <div class="w-10 h-10 bg-emerald-50 text-[#008652] rounded-xl flex items-center justify-center mb-1 text-lg"><i class="fa-solid fa-wallet"></i></div>
+                        <span class="text-[10px] font-bold text-slate-600">Wallet</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl shadow-sm border border-gray-50/50 active:scale-95 transition-all">
+                        <div class="w-10 h-10 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center mb-1 text-lg"><i class="fa-solid fa-coins"></i></div>
+                        <span class="text-[10px] font-bold text-slate-600">Integral</span>
+                    </button>
+                    <button onclick="toggleChatSupport(true)" class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl shadow-sm border border-gray-50/50 active:scale-95 transition-all">
+                        <div class="w-10 h-10 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center mb-1 text-lg"><i class="fa-solid fa-headset"></i></div>
+                        <span class="text-[10px] font-bold text-slate-600">Service</span>
+                    </button>
+                    <button onclick="showSubScreen('messages')" class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl shadow-sm border border-gray-50/50 active:scale-95 transition-all">
+                        <div class="w-10 h-10 bg-purple-50 text-purple-500 rounded-xl flex items-center justify-center mb-1 text-lg"><i class="fa-regular fa-message"></i></div>
+                        <span class="text-[10px] font-bold text-slate-600">Message</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl shadow-sm border border-gray-50/50 active:scale-95 transition-all">
+                        <div class="w-10 h-10 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center mb-1 text-lg"><i class="fa-solid fa-shield-halved"></i></div>
+                        <span class="text-[10px] font-bold text-slate-600">Pin</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl shadow-sm border border-gray-50/50 active:scale-95 transition-all">
+                        <div class="w-10 h-10 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center mb-1 text-lg"><i class="fa-solid fa-book-open"></i></div>
+                        <span class="text-[10px] font-bold text-slate-600">Tutorial</span>
+                    </button>
+                </div>
+
+                <button onclick="handleLogout()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3.5 rounded-full text-center block mt-4 text-xs uppercase tracking-wider">
+                    Logout
+                </button>
+            </div>
+
+            <!-- ================= SUB SCREEN: ADD TOOL PANEL ================= -->
+            <div id="sub-add-tool" class="sub-screen hidden px-6 py-6 flex flex-col h-full bg-[#f4f7f9]">
+                <div class="flex items-center mb-6">
+                    <button onclick="hideSubScreen()" class="text-emerald-800 text-xl"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h2 class="text-lg font-bold text-[#0a8f5c] mx-auto pr-6">Add Tool</h2>
+                </div>
+
+                <h3 class="text-center text-xl font-bold text-emerald-800 mb-4">Choose your payment</h3>
+
+                <div class="bg-white rounded-full p-1.5 flex justify-between items-center mb-5 border border-gray-150">
+                    <button class="w-1/2 bg-[#008652] text-white font-bold text-xs py-2.5 rounded-full">Personal</button>
+                    <button class="w-1/2 text-gray-500 font-bold text-xs py-2.5 rounded-full">Business</button>
+                </div>
+
+                <div class="space-y-3">
+                    <!-- Freecharge Trigger Row -->
+                    <div onclick="showSubScreen('auth-freecharge')" class="bg-white p-4 rounded-2xl border border-gray-150 flex justify-between items-center cursor-pointer hover:bg-slate-50 transition-all shadow-sm">
+                        <div class="flex items-center space-x-3.5">
+                            <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white text-lg font-black font-serif">F</div>
+                            <div>
+                                <div class="flex items-center space-x-1.5">
+                                    <span class="font-bold text-slate-800 text-xs">Freecharge</span>
+                                    <span class="bg-orange-100 text-orange-600 text-[8px] font-extrabold px-1.5 py-0.5 rounded-full uppercase">Binding Bonus</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="text-emerald-600 font-bold text-xs">Payout</span>
+                    </div>
+
+                    <!-- Other Simulated Payment Methods -->
+                    <div class="bg-white p-4 rounded-2xl border border-gray-150 flex justify-between items-center cursor-not-allowed opacity-60">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white text-base font-black">M</div>
+                            <div>
+                                <span class="font-bold text-slate-800 text-xs block">Mobikwik</span>
+                                <span class="text-[9px] text-gray-400">Payin 50.00 - 50000.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= SUB SCREEN: FREECHARGE AUTH ================= -->
+            <div id="sub-auth-freecharge" class="sub-screen hidden px-6 py-6 flex flex-col h-full bg-[#f4f7f9]">
+                <div class="flex items-center mb-6">
+                    <button onclick="showSubScreen('add-tool')" class="text-emerald-800 text-xl"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h2 class="text-base font-bold text-[#0a8f5c] mx-auto pr-6 truncate max-w-[200px]">Freecharge Authentication</h2>
+                </div>
+
+                <!-- Auth card description -->
+                <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-100 flex items-start space-x-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-lg shadow">F</div>
+                    <div>
+                        <h4 class="font-bold text-xs text-emerald-800">Freecharge Authentication</h4>
+                        <p class="text-[10px] text-emerald-600 mt-1">Complete authorization to retrieve your available UPI addresses.</p>
+                    </div>
+                </div>
+
+                <!-- Input UPI ID for Dynamic Binding -->
+                <div class="bg-white rounded-3xl p-5 border border-gray-150 space-y-4 shadow-sm mb-5">
+                    <h5 class="text-xs font-bold text-slate-800">Enter Freecharge Details</h5>
+                    <div class="flex items-center bg-slate-50 border border-gray-150 rounded-full px-4 py-2.5 shadow-inner">
+                        <input type="text" id="freecharge-input-upi" placeholder="e.g. 9988776655@freecharge" class="w-full bg-transparent outline-none text-slate-800 text-xs font-semibold">
+                    </div>
+                </div>
+
+                <!-- Simulated Steps -->
+                <div class="bg-white rounded-3xl p-5 border border-gray-150 space-y-4 shadow-sm">
+                    <div class="flex items-start space-x-3 text-xs">
+                        <span class="w-5 h-5 rounded-full bg-emerald-100 text-[#008652] text-[10px] font-bold flex items-center justify-center mt-0.5">1</span>
+                        <p class="text-[11px] text-gray-500">Provide your custom freecharge handle.</p>
+                    </div>
+                    <div class="flex items-start space-x-3 text-xs">
+                        <span class="w-5 h-5 rounded-full bg-emerald-100 text-[#008652] text-[10px] font-bold flex items-center justify-center mt-0.5">2</span>
+                        <p class="text-[11px] text-gray-500">Clicking authenticate binds it directly to the active list.</p>
+                    </div>
+                </div>
+
+                <button onclick="bindFreecharge()" class="w-full bg-[#0a8f5c] text-white font-bold py-4 rounded-full text-center block mt-auto text-sm shadow-md">
+                    Authenticate & Bind
+                </button>
+            </div>
+
+            <!-- ================= SUB SCREEN: MESSAGES PANEL ================= -->
+            <div id="sub-messages" class="sub-screen hidden px-6 py-6 flex flex-col h-full bg-[#f4f7f9]">
+                <div class="flex items-center mb-6">
+                    <button onclick="hideSubScreen()" class="text-emerald-800 text-xl"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h2 class="text-lg font-bold text-[#0a8f5c] mx-auto pr-6">Message</h2>
+                </div>
+
+                <div class="bg-white rounded-full p-1.5 flex justify-between items-center mb-5 border border-gray-150">
+                    <button class="w-1/2 bg-emerald-50 text-[#008652] font-bold text-xs py-2.5 rounded-full">Unread</button>
+                    <button class="w-1/2 text-gray-400 font-bold text-xs py-2.5 rounded-full">All</button>
+                </div>
+
+                <div class="flex-1 flex flex-col items-center justify-center text-center opacity-40">
+                    <i class="fa-regular fa-envelope-open text-5xl text-gray-300 mb-2"></i>
+                    <p class="text-xs text-gray-400">No Messages available</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= INTERACTIVE CHATBOT LIVE MODAL ================= -->
+        <div id="chatbot-support" class="absolute inset-0 bg-black/60 z-50 flex flex-col justify-end transition-all duration-300 hidden">
+            <div class="bg-white w-full h-[520px] rounded-t-[32px] flex flex-col">
+                <!-- Header Chat -->
+                <div class="p-5 border-b flex justify-between items-center bg-emerald-50 rounded-t-[32px]">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center border border-emerald-100 shadow-sm">
+                            <i class="fa-solid fa-robot text-[#008652] text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm">JPGPay Assistant</h4>
+                            <span class="text-[10px] text-emerald-600 flex items-center font-bold"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1.5 animate-pulse"></span> Online</span>
+                        </div>
+                    </div>
+                    <button onclick="toggleChatSupport(false)" class="text-gray-400 text-lg hover:text-red-500"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <!-- Message Box -->
+                <div id="chat-messages" class="flex-1 p-5 overflow-y-auto space-y-4 no-scrollbar text-xs">
+                    <!-- Bot message -->
+                    <div class="flex items-start space-x-2.5">
+                        <div class="w-7 h-7 rounded-full bg-emerald-50 flex items-center justify-center text-[#008652] border border-emerald-100 text-[10px] font-bold">Bot</div>
+                        <div class="bg-slate-100 text-slate-700 p-3 rounded-2xl rounded-tl-none max-w-[240px] leading-relaxed">
+                            Hello! Welcome to JPGPay Helpdesk. How can I assist you with your tasks or balances today?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input area -->
+                <div class="p-4 border-t flex items-center space-x-3 bg-slate-50">
+                    <input type="text" id="chat-user-input" placeholder="Type a message..." class="flex-1 bg-white border rounded-full px-4 py-3 outline-none text-xs text-slate-700 shadow-inner">
+                    <button onclick="sendMessageToBot()" class="w-10 h-10 bg-[#008652] text-white rounded-full flex items-center justify-center active:scale-95 shadow"><i class="fa-regular fa-paper-plane text-sm"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PERSISTENT FLOATING ROBOT WIDGET -->
+        <div onclick="toggleChatSupport(true)" id="chat-widget" class="absolute bottom-24 right-5 z-20 cursor-pointer transition-all active:scale-90">
+            <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg border border-emerald-100">
+                <svg viewBox="0 0 100 100" class="w-8 h-8">
+                    <rect x="30" y="35" width="40" height="35" rx="10" fill="#008652"/>
+                    <circle cx="43" cy="50" r="4" fill="white"/>
+                    <circle cx="57" cy="50" r="4" fill="white"/>
+                    <line x1="50" y1="35" x2="50" y2="25" stroke="#008652" stroke-width="4"/>
+                    <circle cx="50" cy="22" r="5" fill="#fbc02d"/>
+                    <path d="M40 60 Q50 66 60 60" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- PERSISTENT BOTTOM NAVIGATION BAR -->
+        <div id="bottom-nav" class="absolute bottom-0 left-0 right-0 h-20 bg-white border-t border-gray-100 flex justify-around items-center px-4 pb-2 z-15 shadow-[0_-4px_12px_rgba(0,0,0,0.02)]">
+            <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center text-[#008652]" id="nav-home">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[9px] font-bold mt-1">Home</span>
+            </button>
+            <button onclick="switchTab('payment')" class="nav-btn flex flex-col items-center text-gray-400" id="nav-payment">
+                <i class="fa-solid fa-credit-card text-lg"></i>
+                <span class="text-[9px] font-bold mt-1">Payment</span>
+            </button>
+            <button onclick="switchTab('tool')" class="relative flex flex-col items-center justify-center bg-[#fbc02d] text-slate-800 w-12 h-12 rounded-full -mt-6 shadow-lg shadow-yellow-500/20 active:scale-95 transition-all">
+                <i class="fa-solid fa-wallet text-lg"></i>
+            </button>
+            <button onclick="switchTab('statistics')" class="nav-btn flex flex-col items-center text-gray-400" id="nav-statistics">
+                <i class="fa-solid fa-chart-simple text-lg"></i>
+                <span class="text-[9px] font-bold mt-1">Statistics</span>
+            </button>
+            <button onclick="switchTab('my')" class="nav-btn flex flex-col items-center text-gray-400" id="nav-my">
+                <i class="fa-solid fa-user text-lg"></i>
+                <span class="text-[9px] font-bold mt-1">My</span>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- MAIN CORE INTEGRATION SCRIPT -->
+    <script type="module">
+        import { db, doc, getDoc, updateDoc } from "./services/firebase-config.js";
+
+        // Verification checks
+        const userPhone = sessionStorage.getItem("userPhone");
+        const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+
+        if (isLoggedIn !== "true" || !userPhone) {
+            window.location.href = "login.html";
+        }
+
+        // State holder references
+        let cachedUserData = null;
+        let totalClaimedCommission = 0;
+
+        // Fetch User Database data real-time
+        async function fetchUserData() {
+            try {
+                const userDocRef = doc(db, "users", userPhone);
+                const userSnap = await getDoc(userDocRef);
+
+                if (userSnap.exists()) {
+                    cachedUserData = userSnap.data();
+                    renderUIData();
+                } else {
+                    handleLogout();
+                }
+            } catch (err) {
+                console.error("Database Error:", err);
+            }
+        }
+
+        // Render Data values on Screen
+        function renderUIData() {
+            if (!cachedUserData) return;
+
+            // Balance calculations
+            const currentBalance = Number(cachedUserData.balance).toFixed(2);
+
+            // Update all elements across pages
+            document.getElementById('home-username').innerText = cachedUserData.username;
+            document.getElementById('home-uid').innerText = cachedUserData.uid;
+            document.getElementById('home-balance').innerText = currentBalance;
+            
+            // Set dynamic element lists
+            document.querySelectorAll('.payment-val').forEach(el => el.innerText = currentBalance);
+        }
+
+        // Handle dynamically claiming tasks
+        window.claimCommission = async (taskId, amount) => {
+            const btn = document.getElementById('claim-btn-' + taskId);
+            const card = document.getElementById('task-card-' + taskId);
+            
+            if (!cachedUserData || btn.disabled) return;
+
+            try {
+                // Instantly update UI for snappy feeling
+                btn.disabled = true;
+                btn.innerText = "Claimed";
+                btn.className = "bg-gray-100 text-gray-400 px-6 py-2 rounded-full text-xs font-bold cursor-not-allowed";
+                card.style.opacity = "0.7";
+
+                // Add to FireStore DB
+                const newBalance = Number(cachedUserData.balance) + Number(amount);
+                const userDocRef = doc(db, "users", userPhone);
+                
+                await updateDoc(userDocRef, {
+                    balance: newBalance
+                });
+
+                // Update runtime caches
+                cachedUserData.balance = newBalance;
+                totalClaimedCommission += amount;
+
+                // Sync all components
+                renderUIData();
+                document.getElementById('payment-reward').innerText = "∫ " + totalClaimedCommission.toFixed(2);
+                document.getElementById('stats-commission').innerText = "₹ " + totalClaimedCommission.toFixed(2);
+                document.getElementById('stats-est-income').innerText = "₹ " + totalClaimedCommission.toFixed(2);
+                document.getElementById('my-commission-total').innerText = "₹ " + totalClaimedCommission.toFixed(2);
+
+                showToast("Commission of ₹" + amount + " Claimed!", "success");
+
+            } catch (err) {
+                showToast("Claim transaction failed!", "error");
+                btn.disabled = false;
+                btn.innerText = "Claim";
+                btn.className = "bg-[#008652] text-white px-6 py-2 rounded-full text-xs font-bold";
+                card.style.opacity = "1";
+            }
+        };
+
+        // Bind Payment Tool Integration (Freecharge Authentication Simulation)
+        window.bindFreecharge = async () => {
+            const upiValue = document.getElementById('freecharge-input-upi').value.trim();
+            if (!upiValue.includes('@')) {
+                showToast("Please enter a valid UPI address!", "error");
+                return;
+            }
+
+            try {
+                // Instantly update status logic matching Screenshot 8/10
+                const userDocRef = doc(db, "users", userPhone);
+                await updateDoc(userDocRef, {
+                    freechargeUPI: upiValue,
+                    freechargeStatus: "Active"
+                });
+
+                document.getElementById('freecharge-upi-text').innerText = upiValue;
+                const statusTag = document.getElementById('freecharge-status-tag');
+                statusTag.innerText = "Active";
+                statusTag.className = "bg-emerald-600 text-white text-[10px] font-bold px-3.5 py-1 rounded-full uppercase shadow-sm";
+
+                showToast("Freecharge Authenticated & Bound!", "success");
+                hideSubScreen();
+                switchTab('tool');
+
+            } catch (err) {
+                showToast("Binding Failed: " + err.message, "error");
+            }
+        };
+
+        // Toast notifications
+        function showToast(message, type = "success") {
+            const toast = document.getElementById('global-toast');
+            const icon = document.getElementById('toast-icon');
+            const text = document.getElementById('toast-message');
+
+            text.innerText = message;
+            if (type === "success") {
+                icon.className = "fa-solid fa-circle-check text-emerald-400 text-sm";
+            } else {
+                icon.className = "fa-solid fa-circle-exclamation text-rose-400 text-sm";
+            }
+
+            toast.classList.remove('-translate-y-20');
+            toast.classList.add('translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0');
+                toast.classList.add('-translate-y-20');
+            }, 3000);
+        }
+
+        // Global Copy Function
+        window.copyToClipboard = (elemId) => {
+            const text = document.getElementById(elemId).innerText;
+            navigator.clipboard.writeText(text);
+            showToast("Copied to Clipboard!", "success");
+        };
+
+        // Navigation controls
+        window.switchTab = (tabName) => {
+            // Hide sub-screens and reset scroll view
+            document.querySelectorAll('.sub-screen').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('main-scroll-container').scrollTop = 0;
+
+            // Show target
+            document.getElementById('tab-' + tabName).classList.remove('hidden');
+
+            // Style updating
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-[#008652]');
+                btn.classList.add('text-gray-400');
+            });
+
+            const activeBtn = document.getElementById('nav-' + tabName);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-400');
+                activeBtn.classList.add('text-[#008652]');
+            }
+        };
+
+        window.showSubScreen = (screenId) => {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.sub-screen').forEach(el => el.classList.add('hidden'));
+            
+            document.getElementById('sub-' + screenId).classList.remove('hidden');
+            document.getElementById('main-scroll-container').scrollTop = 0;
+        };
+
+        window.hideSubScreen = () => {
+            document.querySelectorAll('.sub-screen').forEach(el => el.classList.add('hidden'));
+            switchTab('home');
+        };
+
+        window.handleLogout = () => {
+            sessionStorage.clear();
+            window.location.href = "login.html";
+        };
+
+        // Simulated Chatbot Actions
+        window.toggleChatSupport = (show = true) => {
+            const chatbot = document.getElementById('chatbot-support');
+            if (show) {
+                chatbot.classList.remove('hidden');
+            } else {
+                chatbot.classList.add('hidden');
+            }
+        };
+
+        window.sendMessageToBot = () => {
+            const input = document.getElementById('chat-user-input');
+            const box = document.getElementById('chat-messages');
+            const userMsg = input.value.trim();
+
+            if (!userMsg) return;
+
+            // Append User Message bubble
+            box.innerHTML += `
+                <div class="flex items-start justify-end space-x-2.5">
+                    <div class="bg-emerald-600 text-white p-3 rounded-2xl rounded-tr-none max-w-[240px] leading-relaxed">
+                        ${userMsg}
+                    </div>
+                </div>
+            `;
+            input.value = '';
+            box.scrollTop = box.scrollHeight;
+
+            // Bot Simulated Auto reply
+            setTimeout(() => {
+                let botResponse = "Our technical team is reviewing your account transaction log. Please bind your active UPI and verify your commission claims in the 'Statistics' page!";
+                if (userMsg.toLowerCase().includes('claim') || userMsg.toLowerCase().includes('balance')) {
+                    botResponse = "Your available balance of ₹" + Number(cachedUserData.balance).toFixed(2) + " is safe. Complete tasks to claim the active 4.2% daily income!";
+                }
+
+                box.innerHTML += `
+                    <div class="flex items-start space-x-2.5">
+                        <div class="w-7 h-7 rounded-full bg-emerald-50 flex items-center justify-center text-[#008652] border border-emerald-100 text-[10px] font-bold">Bot</div>
+                        <div class="bg-slate-100 text-slate-700 p-3 rounded-2xl rounded-tl-none max-w-[240px] leading-relaxed">
+                            ${botResponse}
+                        </div>
+                    </div>
+                `;
+                box.scrollTop = box.scrollHeight;
+            }, 1000);
+        };
+
+        // Initializer
+        fetchUserData();
+    </script>
+</body>
+</html>
