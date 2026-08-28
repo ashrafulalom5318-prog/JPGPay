@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPGPay Web App</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f4f7f6;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .jpg-font {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+        }
+
+        /* Hide scrollbar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-[#f3f7f6] flex justify-center items-center min-h-screen">
+
+    <!-- MAIN WEB APP CONTAINER (Mobile-First responsive box) -->
+    <div class="relative w-full max-w-md h-screen md:h-[880px] md:rounded-[36px] bg-[#f4f7f9] md:shadow-2xl overflow-hidden flex flex-col border border-gray-100">
+        
+        <!-- DYNAMIC SCREEN CONTENT CONTAINER -->
+        <div class="flex-1 overflow-y-auto no-scrollbar pb-24">
+
+            <!-- ================= SCREEN 1: SPLASH SCREEN ================= -->
+            <div id="screen-splash-1" class="screen flex flex-col justify-center items-center h-full bg-white animate-fade-in">
+                <!-- SVG Replicated Logo -->
+                <div class="flex flex-col items-center">
+                    <div class="w-24 h-24 mb-4">
+                        <svg viewBox="0 0 100 100" class="w-full h-full">
+                            <!-- Dissolving Orange Pixels -->
+                            <rect x="15" y="35" width="5" height="5" fill="#f25f22" />
+                            <rect x="22" y="28" width="5" height="5" fill="#f25f22" />
+                            <rect x="22" y="42" width="5" height="5" fill="#f25f22" />
+                            <rect x="15" y="51" width="5" height="5" fill="#f25f22" />
+                            <rect x="29" y="35" width="5" height="5" fill="#1e2530" />
+                            <rect x="29" y="49" width="5" height="5" fill="#1e2530" />
+                            <rect x="22" y="57" width="5" height="5" fill="#f25f22" />
+                            <rect x="29" y="63" width="5" height="5" fill="#f25f22" />
+                            <rect x="36" y="42" width="5" height="5" fill="#1e2530" />
+                            <rect x="36" y="56" width="5" height="5" fill="#1e2530" />
+                            <!-- Wallet Shell -->
+                            <rect x="44" y="27" width="46" height="40" rx="7" fill="#1e2530" />
+                            <!-- Orange Tab lock -->
+                            <rect x="73" y="39" width="16" height="14" rx="3" fill="#f25f22" />
+                            <!-- White checkmark -->
+                            <path d="M77 46 l2.5 2.5 l5 -5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                            <!-- Wallet Side stripes -->
+                            <line x1="44" y1="38" x2="52" y2="38" stroke="white" stroke-width="2" />
+                            <line x1="44" y1="47" x2="52" y2="47" stroke="white" stroke-width="2" />
+                            <line x1="44" y1="56" x2="52" y2="56" stroke="white" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div class="text-center">
+                        <span class="jpg-font text-3xl text-[#f25f22] tracking-wider block">JPG</span>
+                        <span class="text-xs font-bold text-[#1e2530] tracking-[0.4em] ml-1.5 block -mt-1">PAY</span>
+                    </div>
+                    <h2 class="text-gray-500 font-semibold text-lg mt-8">JPGPay</h2>
+                </div>
+            </div>
+
+            <!-- ================= SCREEN 2: CARD SPLASH INTRO ================= -->
+            <div id="screen-splash-2" class="screen hidden flex flex-col justify-center items-center h-full bg-[#ecf4f3] relative overflow-hidden">
+                <!-- Decorative Circles matching screenshot 2 -->
+                <div class="absolute -top-12 -right-12 w-64 h-64 bg-blue-500 rounded-full opacity-60"></div>
+                
+                <!-- Floating Diagonal Card -->
+                <div class="w-72 h-44 bg-white rounded-3xl shadow-xl border border-white/40 transform -rotate-12 flex flex-col justify-center items-center p-6 relative z-10">
+                    <div class="w-16 h-16">
+                        <svg viewBox="0 0 100 100" class="w-full h-full">
+                            <rect x="15" y="35" width="5" height="5" fill="#f25f22" />
+                            <rect x="22" y="28" width="5" height="5" fill="#f25f22" />
+                            <rect x="22" y="42" width="5" height="5" fill="#f25f22" />
+                            <rect x="15" y="51" width="5" height="5" fill="#f25f22" />
+                            <rect x="29" y="35" width="5" height="5" fill="#1e2530" />
+                            <rect x="29" y="49" width="5" height="5" fill="#1e2530" />
+                            <rect x="22" y="57" width="5" height="5" fill="#f25f22" />
+                            <rect x="29" y="63" width="5" height="5" fill="#f25f22" />
+                            <rect x="36" y="42" width="5" height="5" fill="#1e2530" />
+                            <rect x="36" y="56" width="5" height="5" fill="#1e2530" />
+                            <rect x="44" y="27" width="46" height="40" rx="7" fill="#1e2530" />
+                            <rect x="73" y="39" width="16" height="14" rx="3" fill="#f25f22" />
+                            <path d="M77 46 l2.5 2.5 l5 -5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                            <line x1="44" y1="38" x2="52" y2="38" stroke="white" stroke-width="2" />
+                            <line x1="44" y1="47" x2="52" y2="47" stroke="white" stroke-width="2" />
+                            <line x1="44" y1="56" x2="52" y2="56" stroke="white" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <span class="jpg-font text-xl text-[#f25f22] tracking-wide block mt-1">JPG</span>
+                    <span class="text-[9px] font-bold text-[#1e2530] tracking-[0.3em] block -mt-1">PAY</span>
+                </div>
+            </div>
+
+            <!-- ================= SCREEN 3: LOGIN SCREEN ================= -->
+            <div id="screen-login" class="screen hidden px-6 py-12 flex flex-col justify-between h-full bg-[#f4f7f9]">
+                <div class="flex flex-col items-center">
+                    <!-- Logo container -->
+                    <div class="w-40 h-40 bg-white rounded-3xl shadow-sm flex flex-col justify-center items-center border border-gray-50/50">
+                        <div class="w-20 h-20">
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <rect x="15" y="35" width="5" height="5" fill="#f25f22" />
+                                <rect x="22" y="28" width="5" height="5" fill="#f25f22" />
+                                <rect x="22" y="42" width="5" height="5" fill="#f25f22" />
+                                <rect x="15" y="51" width="5" height="5" fill="#f25f22" />
+                                <rect x="29" y="35" width="5" height="5" fill="#1e2530" />
+                                <rect x="29" y="49" width="5" height="5" fill="#1e2530" />
+                                <rect x="22" y="57" width="5" height="5" fill="#f25f22" />
+                                <rect x="29" y="63" width="5" height="5" fill="#f25f22" />
+                                <rect x="36" y="42" width="5" height="5" fill="#1e2530" />
+                                <rect x="36" y="56" width="5" height="5" fill="#1e2530" />
+                                <rect x="44" y="27" width="46" height="40" rx="7" fill="#1e2530" />
+                                <rect x="73" y="39" width="16" height="14" rx="3" fill="#f25f22" />
+                                <path d="M77 46 l2.5 2.5 l5 -5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                                <line x1="44" y1="38" x2="52" y2="38" stroke="white" stroke-width="2" />
+                                <line x1="44" y1="47" x2="52" y2="47" stroke="white" stroke-width="2" />
+                                <line x1="44" y1="56" x2="52" y2="56" stroke="white" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <span class="jpg-font text-2xl text-[#f25f22] tracking-wider block">JPG</span>
+                        <span class="text-[10px] font-extrabold text-[#1e2530] tracking-[0.35em] block -mt-1 ml-1">PAY</span>
+                    </div>
+                </div>
+
+                <!-- Input Fields Block -->
+                <div class="space-y-4 mt-8">
+                    <div class="flex items-center bg-white border border-gray-150 rounded-full px-5 py-3.5 shadow-sm">
+                        <i class="fa-regular fa-user text-gray-400 mr-3.5 text-lg"></i>
+                        <input type="text" id="login-phone" placeholder="Phone" class="w-full bg-transparent outline-none text-gray-700 text-sm">
+                    </div>
+                    
+                    <div class="flex items-center bg-white border border-gray-150 rounded-full px-5 py-3.5 shadow-sm">
+                        <i class="fa-solid fa-lock text-gray-400 mr-3.5 text-lg"></i>
+                        <input type="password" id="login-pass" placeholder="Password" class="w-full bg-transparent outline-none text-gray-700 text-sm">
+                    </div>
+
+                    <div class="flex justify-between items-center text-xs px-2.5">
+                        <button onclick="showScreen('register')" class="text-[#0a8f5c] font-bold hover:underline">Register</button>
+                        <label class="flex items-center space-x-2 text-gray-500 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 rounded-full border-gray-300 text-emerald-600 focus:ring-emerald-500">
+                            <span>Remember Me</span>
+                        </label>
+                    </div>
+
+                    <!-- Agree Terms -->
+                    <div class="flex items-center space-x-2.5 text-xs px-2.5 pt-2">
+                        <input type="checkbox" id="agree-check" class="w-4 h-4 rounded-full border-gray-300 text-emerald-600 focus:ring-emerald-500">
+                        <label for="agree-check" class="text-gray-500">
+                            Agree <span class="text-[#0a8f5c] underline font-semibold">"User Privacy Agreement"</span>
+                        </label>
+                    </div>
+
+                    <!-- Sign In Action -->
+                    <button onclick="handleLogin()" class="w-full bg-[#0a8f5c] hover:bg-emerald-800 text-white font-bold py-4 rounded-full shadow-lg shadow-emerald-700/10 transition-all text-center block mt-6 text-sm tracking-wide">
+                        Sign In
+                    </button>
+
+                    <div class="text-center pt-4">
+                        <button onclick="showScreen('reset-pass')" class="text-xs text-[#0a8f5c] font-bold hover:underline">Forget Password</button>
+                    </div>
+                </div>
+
+                <div class="text-center text-xs text-gray-400 mt-auto pt-6">v1.0.1</div>
+            </div>
+
+            <!-- ================= SCREEN 4: REGISTER SCREEN ================= -->
+            <div id="screen-register" class="screen hidden px-6 py-6 flex flex-col h-full bg-[#f4f7f9]">
+                <div class="flex items-center mb-6">
+                    <button onclick="showScreen('login')" class="text-emerald-800 text-xl"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h2 class="text-lg font-bold text-[#0a8f5c] mx-auto pr-6">Register</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex items-center bg-white border border-gray-150 rounded-full px-5 py-3.5 shadow-sm">
+                        <i class="fa-regular fa-user text-[#0a8f5c] mr-3.5 text-lg"></i>
+                        <input type="text" placeholder="User Name" class="w-full bg-transparent outline-none text-gray-700 text-sm">
+                    </div>
+                    <div class="flex items-center bg-white border border-gray-150 rounded-full px-5 py-3.5 shadow-sm">
+                        <i class="fa-solid fa-lock text-[#0a8f5c] mr-3.5 text-lg"></i>
+                        <input type="password" placeholder="Password" class="w-full bg-transparent outline-none text-gray-700 text-sm">
+                    </div>
+                    <div class="flex items-center bg-white border border-gray-150 rounded-full px-5 py-3.5 shadow-sm">
+                        <i class="fa-solid fa-phone text-[#0a8f5c] mr-3 text-lg"></i>
+                        <span class="text-[#0a8f5c] font-bold text-sm border-r pr-3 mr-3">+91</span>
+                        <input type="text" placeholder="Phone" class="w-full bg-transparent outline-none text-gray-700 text-sm">
+                    </div>
+                    <div class="flex items-center bg-white border border-gray-150 rounded-full px-5 py-2.5 shadow-sm">
+                        <i class="fa-regular fa-envelope text-[#0a8f5c] mr-3.5 text-lg"></i>
+                        <input type="text" placeholder="OTP Code" class="w-full bg-transparent outline-none text-gray-700 text-sm">
+                        <button class="bg-[#5cb892] text-white text-xs px-4 py-2 rounded-full font-bold">Send</button>
+                    </div>
+                    <div class="flex items-center bg-white border border-gray-150 rounded-full px-5 py-3.5 shadow-sm">
+                        <i class="fa-solid fa-link text-[#0a8f5c] mr-3.5 text-lg"></i>
+                        <input type="text" value="4MjPfy" class="w-full bg-transparent outline-none text-gray-700 text-sm font-semibold">
+                    </div>
+
+                    <button onclick="showScreen('login')" class="w-full bg-[#0a8f5c] text-white font-bold py-4 rounded-full shadow-md text-center block mt-6 text-sm">
+                        Sign Up
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= SCREEN 5: RESET PASSWORD ================= -->
+            <div id="screen-reset-pass" class="screen hidden px-6 py-6 flex flex-col h-full bg-[#f4f7f9]">
+                <div class="flex items-center mb-8">
+                    <button onclick="showScreen('login')" class="text-emerald-800 text-xl"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h2 class="text-lg font-bold text-[#0a8f5c] mx-auto pr-6">Reset Password</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex items-center bg-white border border-gray-150 rounded-full px-5 py-3.5 shadow-sm">
+                        <i class="fa-solid fa-phone text-[#0a8f5c] mr-3 text-lg"></i>
+                        <span class="text-[#0a8f5c] font-bold text-sm border-r pr-3 mr-3">+91</span>
+                        <input type="text" placeholder="Phone" class="w-full bg-transparent outline-none text-gray-700 text-sm">
+                    </div>
+                    <div class="flex items-center bg-white border border-gray-150 rounded-full px-5 py-3.5 shadow-sm">
+                        <i class="fa-solid fa-lock text-[#0a8f5c] mr-3.5 text-lg"></i>
+                        <input type="password" placeholder="New Password" class="w-full bg-transparent outline-none text-gray-700 text-sm">
+                    </div>
+                    <div class="flex items-center bg-white border border-gray-150 rounded-full px-5 py-2.5 shadow-sm">
+                        <i class="fa-regular fa-envelope text-[#0a8f5c] mr-3.5 text-lg"></i>
+                        <input type="text" placeholder="OTP Code" class="w-full bg-transparent outline-none text-gray-700 text-sm">
+                        <button class="bg-[#5cb892] text-white text-xs px-4 py-2 rounded-full font-bold">Send</button>
+                    </div>
+
+                    <button onclick="showScreen('login')" class="w-full bg-[#0a8f5c] text-white font-bold py-4 rounded-full shadow-md text-center block mt-6 text-sm">
+                        Reset Password
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= MAIN DASHBOARD: HOME TAB ================= -->
+            <div id="tab-home" class="tab-content hidden p-5 space-y-5">
+                <!-- Header -->
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center border border-white shadow-sm overflow-hidden">
+                            <i class="fa-solid fa-user text-blue-500 text-xl mt-1.5"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-base font-bold text-slate-800 leading-tight">Jfjdkd</h4>
+                            <div class="flex items-center space-x-1.5 text-gray-400 text-xs">
+                                <span>ID: 242482</span>
+                                <button class="text-[#0a8f5c]"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-600 shadow-sm relative">
+                        <i class="fa-regular fa-bell text-lg"></i>
+                        <span class="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                    </button>
+                </div>
+
+                <!-- Green Balance Card -->
+                <div class="relative bg-[#008652] text-white rounded-3xl p-6 shadow-xl overflow-hidden">
+                    <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-blue-500 rounded-full opacity-35 filter blur-xl"></div>
+                    <div class="absolute -right-2 -top-6 w-28 h-28 bg-yellow-400 rounded-full opacity-40 filter blur-xl"></div>
+                    
+                    <span class="text-emerald-100 text-sm font-medium">Available Balance</span>
+                    <div class="flex items-baseline space-x-1.5 mt-2.5 mb-4">
+                        <span class="text-2xl font-bold">₹</span>
+                        <span class="text-4xl font-extrabold tracking-tight">130</span>
+                    </div>
+                    <button class="bg-white text-[#008652] text-xs font-bold px-6 py-2 rounded-full shadow-md hover:bg-slate-50 transition-all absolute right-5 bottom-5">Detail</button>
+                </div>
+
+                <!-- Deposit & Withdrawal Subcard -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-4 rounded-2xl relative overflow-hidden flex flex-col shadow-sm">
+                        <span class="text-xs text-blue-100 font-semibold flex items-center"><i class="fa-solid fa-arrow-up-long mr-1.5 text-emerald-300"></i> Deposit</span>
+                        <span class="text-lg font-bold mt-2">₹ 0</span>
+                        <div class="absolute -right-3 -bottom-3 w-12 h-12 bg-white/10 rounded-full"></div>
+                    </div>
+                    <div class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-4 rounded-2xl relative overflow-hidden flex flex-col shadow-sm">
+                        <span class="text-xs text-emerald-100 font-semibold flex items-center"><i class="fa-solid fa-arrow-down-long mr-1.5 text-rose-300"></i> Withdrawal</span>
+                        <span class="text-lg font-bold mt-2">₹ 0</span>
+                        <div class="absolute -right-3 -bottom-3 w-12 h-12 bg-white/10 rounded-full"></div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions with USDT tags -->
+                <div class="grid grid-cols-4 gap-2.5 pt-1">
+                    <button class="flex flex-col items-center justify-center p-3 bg-white rounded-2xl shadow-sm border border-gray-50 relative">
+                        <span class="absolute -top-1.5 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-[8px] px-1.5 py-0.5 rounded-full font-bold whitespace-nowrap">109INR</span>
+                        <div class="w-10 h-10 bg-emerald-50 text-[#008652] rounded-xl flex items-center justify-center mb-1 text-lg">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700">USDT</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-3 bg-white rounded-2xl shadow-sm border border-gray-50">
+                        <div class="w-10 h-10 bg-indigo-50 text-indigo-500 rounded-xl flex items-center justify-center mb-1 text-lg">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700">Task</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-3 bg-white rounded-2xl shadow-sm border border-gray-50">
+                        <div class="w-10 h-10 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center mb-1 text-lg">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700">Team</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-3 bg-white rounded-2xl shadow-sm border border-gray-50">
+                        <div class="w-10 h-10 bg-purple-50 text-purple-500 rounded-xl flex items-center justify-center mb-1 text-lg">
+                            <i class="fa-solid fa-receipt"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-700">Order</span>
+                    </button>
+                </div>
+
+                <!-- Recent transactions -->
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center px-1">
+                        <h5 class="font-bold text-slate-800 text-sm">Transactions</h5>
+                        <button class="text-xs text-[#0a8f5c] font-bold">See All</button>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-50 flex justify-between items-center">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-9 h-9 rounded-full bg-red-50 text-red-500 flex items-center justify-center">
+                                <i class="fa-solid fa-arrow-down text-sm"></i>
+                            </div>
+                            <div>
+                                <h6 class="font-bold text-slate-800 text-xs">Deposit INR</h6>
+                                <span class="text-[9px] text-gray-400">2026-08-23 11:50:25</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-bold text-slate-800 block text-xs">₹ 2400.00</span>
+                            <span class="inline-block bg-red-100 text-red-600 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider mt-0.5">Close</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PAYMENT TAB SCREEN ================= -->
+            <div id="tab-payment" class="tab-content hidden p-5 space-y-4">
+                <h3 class="text-lg font-bold text-[#0a8f5c] text-center">Payment</h3>
+
+                <div class="bg-[#008652] text-white rounded-3xl p-5 shadow-lg relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 w-28 h-28 bg-yellow-400 rounded-full opacity-30 filter blur-lg"></div>
+                    <span class="text-[11px] text-emerald-100 font-bold uppercase tracking-wider">Cashback</span>
+                    <h2 class="text-3xl font-extrabold mt-1">4.2%</h2>
+                    
+                    <div class="grid grid-cols-3 gap-2 mt-5">
+                        <div class="bg-emerald-900/40 p-2 rounded-xl text-center">
+                            <span class="text-[9px] text-emerald-100 block">Balance</span>
+                            <span class="font-bold text-sm">∫ 130</span>
+                        </div>
+                        <div class="bg-emerald-900/40 p-2 rounded-xl text-center">
+                            <span class="text-[9px] text-emerald-100 block">Reward</span>
+                            <span class="font-bold text-sm">∫ 0</span>
+                        </div>
+                        <div class="bg-emerald-900/40 p-2 rounded-xl text-center">
+                            <span class="text-[9px] text-emerald-100 block">Pending</span>
+                            <span class="font-bold text-sm">∫ 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 border border-amber-100 rounded-xl p-3 text-[10px] text-amber-700 flex items-start space-x-2">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5"></i>
+                    <span>Please use Freecharge or Mobikwik or Paytm wallet for payment!</span>
+                </div>
+
+                <!-- Horizontal categories matching Screenshot 7 -->
+                <div class="flex space-x-2 overflow-x-auto no-scrollbar py-1">
+                    <span class="bg-[#008652] text-white px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap cursor-pointer">Top Picks</span>
+                    <span class="bg-white border text-gray-500 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap cursor-pointer">500-1999</span>
+                    <span class="bg-white border text-gray-500 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap cursor-pointer">2000-4999</span>
+                    <span class="bg-white border text-gray-500 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap cursor-pointer">5000+</span>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex justify-between items-center">
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-slate-800 text-sm">INR</span>
+                                <span class="bg-slate-50 text-slate-500 text-[10px] font-mono px-2 py-0.5 rounded border border-gray-100">zLnUJI</span>
+                            </div>
+                            <div class="mt-2 text-xs">
+                                <p class="text-gray-500">Amount: <span class="text-slate-800 font-bold">∫ 600</span></p>
+                                <p class="text-red-500 font-bold">Income: +25.2</p>
+                            </div>
+                        </div>
+                        <button onclick="switchTab('tool')" class="bg-[#008652] text-white px-5 py-2 rounded-full text-xs font-bold">Claim</button>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex justify-between items-center">
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-slate-800 text-sm">INR</span>
+                                <span class="bg-slate-50 text-slate-500 text-[10px] font-mono px-2 py-0.5 rounded border border-gray-100">otwyap</span>
+                            </div>
+                            <div class="mt-2 text-xs">
+                                <p class="text-gray-500">Amount: <span class="text-slate-800 font-bold">∫ 440</span></p>
+                                <p class="text-red-500 font-bold">Income: +18.48</p>
+                            </div>
+                        </div>
+                        <button onclick="switchTab('tool')" class="bg-[#008652] text-white px-5 py-2 rounded-full text-xs font-bold">Claim</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TOOL SCREEN (Screenshot 8) ================= -->
+            <div id="tab-tool" class="tab-content hidden p-5 space-y-4">
+                <h3 class="text-lg font-bold text-[#0a8f5c] text-center">Tool</h3>
+
+                <div class="space-y-3">
+                    <!-- Paytm item -->
+                    <div class="bg-[#008652] text-white p-4 rounded-3xl relative overflow-hidden flex justify-between items-center shadow-sm">
+                        <div class="space-y-1.5 relative z-10">
+                            <h4 class="font-bold text-sm">Paytm Business</h4>
+                            <p class="text-xs text-emerald-100 font-mono">paytm.s2spfk6@pty</p>
+                            <p class="text-[10px] text-emerald-100 opacity-80">LimitedRange: 10.00~100000.00</p>
+                        </div>
+                        <span class="bg-red-500/90 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider relative z-10 shadow-inner">Failed</span>
+                    </div>
+
+                    <!-- Mobikwik Item -->
+                    <div class="bg-[#008652] text-white p-4 rounded-3xl relative overflow-hidden flex justify-between items-center shadow-sm">
+                        <div class="space-y-1.5 relative z-10">
+                            <h4 class="font-bold text-sm">Mobikwik</h4>
+                            <p class="text-xs text-emerald-100 font-mono">6003030441@mbkns</p>
+                            <p class="text-[10px] text-emerald-100 opacity-80">LimitedRange: 10.00~100000.00</p>
+                        </div>
+                        <span class="bg-red-500/90 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider relative z-10 shadow-inner">Failed</span>
+                    </div>
+
+                    <!-- Freecharge Item -->
+                    <div class="bg-[#008652] text-white p-4 rounded-3xl relative overflow-hidden flex justify-between items-center shadow-sm">
+                        <div class="space-y-1.5 relative z-10">
+                            <h4 class="font-bold text-sm">Freecharge</h4>
+                            <p class="text-xs text-emerald-100 font-mono">6003030441@freecharge</p>
+                            <p class="text-[10px] text-emerald-100 opacity-80">LimitedRange: 10.00~100000.00</p>
+                        </div>
+                        <span class="bg-red-500/90 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider relative z-10 shadow-inner">Failed</span>
+                    </div>
+                </div>
+
+                <button onclick="showScreen('add-tool')" class="w-full bg-[#008652] hover:bg-emerald-800 text-white font-bold py-3.5 rounded-full shadow-lg text-center block mt-6 text-sm">
+                    Add
+                </button>
+            </div>
+
+            <!-- ================= ADD TOOL SCREEN (Screenshot 9) ================= -->
+            <div id="screen-add-tool" class="screen hidden px-6 py-6 flex flex-col h-full bg-[#f4f7f9]">
+                <div class="flex items-center mb-6">
+                    <button onclick="switchTab('tool')" class="text-emerald-800 text-xl"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h2 class="text-lg font-bold text-[#0a8f5c] mx-auto pr-6">Add Tool</h2>
+                </div>
+
+                <h3 class="text-center text-xl font-bold text-emerald-800 mb-4">Choose your payment</h3>
+
+                <div class="bg-white rounded-full p-1.5 flex justify-between items-center mb-5 border border-gray-150">
+                    <button class="w-1/2 bg-[#008652] text-white font-bold text-xs py-2.5 rounded-full">Personal</button>
+                    <button class="w-1/2 text-gray-500 font-bold text-xs py-2.5 rounded-full">Business</button>
+                </div>
+
+                <div class="space-y-2.5 overflow-y-auto max-h-[480px] no-scrollbar">
+                    <!-- Freecharge Link Row -->
+                    <div onclick="showScreen('auth-freecharge')" class="bg-white p-3.5 rounded-2xl border border-gray-150 flex justify-between items-center cursor-pointer hover:bg-slate-50 transition-all">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white text-lg font-black font-serif">F</div>
+                            <div>
+                                <div class="flex items-center space-x-1.5">
+                                    <span class="font-bold text-slate-800 text-xs">Freecharge</span>
+                                    <span class="bg-orange-100 text-orange-600 text-[8px] font-extrabold px-1.5 py-0.5 rounded-full uppercase">Binding Bonus</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="text-emerald-600 font-bold text-xs">Payout</span>
+                    </div>
+
+                    <!-- Mobikwik Row -->
+                    <div class="bg-white p-3.5 rounded-2xl border border-gray-150 flex justify-between items-center cursor-pointer">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white text-base font-black">M</div>
+                            <div>
+                                <div class="flex items-center space-x-1.5">
+                                    <span class="font-bold text-slate-800 text-xs">Mobikwik</span>
+                                    <span class="bg-orange-100 text-orange-600 text-[8px] font-extrabold px-1.5 py-0.5 rounded-full uppercase">Binding Bonus</span>
+                                </div>
+                                <span class="text-[9px] text-gray-400 block mt-0.5">Payin 50.00 - 50000.00</span>
+                            </div>
+                        </div>
+                        <span class="text-emerald-600 font-bold text-xs">Payout</span>
+                    </div>
+
+                    <!-- Google Pay Row -->
+                    <div class="bg-white p-3.5 rounded-2xl border border-gray-150 flex justify-between items-center cursor-pointer">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-blue-500 text-base font-bold"><i class="fa-brands fa-google-pay text-2xl"></i></div>
+                            <div>
+                                <div class="flex items-center space-x-1.5">
+                                    <span class="font-bold text-slate-800 text-xs">GooglePay</span>
+                                    <span class="bg-orange-100 text-orange-600 text-[8px] font-extrabold px-1.5 py-0.5 rounded-full uppercase">Binding Bonus</span>
+                                </div>
+                                <span class="text-[9px] text-gray-400 block mt-0.5">Payin 10.00 - 500.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="switchTab('tool')" class="w-full bg-[#008652] text-white font-bold py-3.5 rounded-full text-center block mt-auto text-sm">
+                    Sure
+                </button>
+            </div>
+
+            <!-- ================= FREECHARGE AUTHENTICATION (Screenshot 10) ================= -->
+            <div id="screen-auth-freecharge" class="screen hidden px-6 py-6 flex flex-col h-full bg-[#f4f7f9]">
+                <div class="flex items-center mb-6">
+                    <button onclick="showScreen('add-tool')" class="text-emerald-800 text-xl"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h2 class="text-base font-bold text-[#0a8f5c] mx-auto pr-6 truncate max-w-[200px]">Freecharge Authentication</h2>
+                </div>
+
+                <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-100 flex items-start space-x-3 mb-6 animate-pulse">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-lg shadow">F</div>
+                    <div>
+                        <h4 class="font-bold text-xs text-emerald-800">Freecharge Authentication</h4>
+                        <p class="text-[10px] text-emerald-600 mt-1">Complete authorization to retrieve your available UPI addresses.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-5 border border-gray-150 space-y-6 shadow-sm">
+                    <div class="flex items-start space-x-4">
+                        <span class="w-6 h-6 rounded-full bg-emerald-50 text-[#008652] text-xs font-bold flex items-center justify-center mt-0.5">1</span>
+                        <div>
+                            <h5 class="font-bold text-slate-800 text-xs">Start authentication</h5>
+                            <p class="text-[10px] text-gray-400 mt-0.5">Tap the button below to open Freecharge.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <span class="w-6 h-6 rounded-full bg-emerald-50 text-[#008652] text-xs font-bold flex items-center justify-center mt-0.5">2</span>
+                        <div>
+                            <h5 class="font-bold text-slate-800 text-xs">Complete authorization</h5>
+                            <p class="text-[10px] text-gray-400 mt-0.5">Follow the instructions shown in Freecharge.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <span class="w-6 h-6 rounded-full bg-emerald-50 text-[#008652] text-xs font-bold flex items-center justify-center mt-0.5">3</span>
+                        <div>
+                            <h5 class="font-bold text-slate-800 text-xs">Return to this app</h5>
+                            <p class="text-[10px] text-gray-400 mt-0.5">We will check the result automatically and display your UPI list.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4 border border-gray-150 mt-4">
+                    <span class="text-[11px] font-bold text-emerald-800 block mb-1">Notice</span>
+                    <p class="text-[10px] text-gray-500 leading-normal">Please do not close this page while completing the authorization.</p>
+                </div>
+
+                <button onclick="switchTab('tool')" class="w-full bg-[#008652] text-white font-bold py-3.5 rounded-full text-center block mt-auto text-sm shadow-md">
+                    Go to Authenticate
+                </button>
+            </div>
+
+            <!-- ================= STATISTICS TAB SCREEN (Screenshot 11) ================= -->
+            <div id="tab-statistics" class="tab-content hidden p-5 space-y-4">
+                <h3 class="text-lg font-bold text-[#0a8f5c] text-center">Statistics</h3>
+
+                <div class="bg-white rounded-3xl p-5 border border-gray-100 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <span class="font-bold text-slate-800 text-xs">Statistics <span class="text-[10px] text-gray-400 font-medium ml-1.5">(28/08/2026)</span></span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3.5">
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-gray-100">
+                            <span class="text-[10px] text-gray-400 font-medium block">Balance</span>
+                            <span class="text-sm font-bold text-slate-800">₹ 130.00</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-gray-100">
+                            <span class="text-[10px] text-gray-400 font-medium block">Sell</span>
+                            <span class="text-sm font-bold text-slate-800">₹ 0.00</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-gray-100">
+                            <span class="text-[10px] text-gray-400 font-medium block">Deposit</span>
+                            <span class="text-sm font-bold text-slate-800">₹ 0.00</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-gray-100">
+                            <span class="text-[10px] text-gray-400 font-medium block">Commission</span>
+                            <span class="text-sm font-bold text-slate-800">₹ 0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t space-y-3">
+                        <div class="flex justify-between items-center text-xs bg-emerald-50 text-emerald-800 font-bold px-3 py-2 rounded-lg border border-emerald-100">
+                            <span>Real Time Exchange Rates(INR/USDT)</span>
+                            <span class="font-bold text-emerald-600">109</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
+                                <span class="text-[9px] text-gray-400 block">In Process Amount</span>
+                                <span class="font-bold text-slate-800 text-xs">₹ 0.00</span>
+                            </div>
+                            <div class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
+                                <span class="text-[9px] text-gray-400 block">In Process Orders</span>
+                                <span class="font-bold text-slate-800 text-xs">0</span>
+                            </div>
+                            <div class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
+                                <span class="text-[9px] text-gray-400 block">Commission Rate</span>
+                                <span class="font-bold text-emerald-600 text-xs">4.20 %</span>
+                            </div>
+                            <div class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
+                                <span class="text-[9px] text-gray-400 block">Estimated Income</span>
+                                <span class="font-bold text-slate-800 text-xs">₹ 0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="w-full bg-[#fbc02d] text-slate-800 font-bold py-3.5 rounded-full shadow shadow-yellow-500/10 text-center block mt-2 text-xs uppercase tracking-wider">
+                    Closed Selling
+                </button>
+            </div>
+
+            <!-- ================= MY ASSET TAB SCREEN (Screenshot 12) ================= -->
+            <div id="tab-my" class="tab-content hidden p-5 space-y-5">
+                <h3 class="text-lg font-bold text-[#0a8f5c] text-center">My Asset</h3>
+
+                <div class="bg-white rounded-3xl p-5 shadow-sm border border-gray-150">
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="text-center py-1">
+                            <span class="text-[10px] text-gray-400 block">Deposit</span>
+                            <span class="font-bold text-sm text-slate-800">₹ 0</span>
+                        </div>
+                        <div class="text-center py-1 border-x border-gray-100">
+                            <span class="text-[10px] text-gray-400 block">Withdraw</span>
+                            <span class="font-bold text-sm text-slate-800">₹ 0</span>
+                        </div>
+                        <div class="text-center py-1">
+                            <span class="text-[10px] text-gray-400 block">Commission</span>
+                            <span class="font-bold text-sm text-slate-800">₹ 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3.5 pt-1">
+                    <button class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl shadow-sm border border-gray-50/50">
+                        <div class="w-10 h-10 bg-emerald-50 text-[#008652] rounded-xl flex items-center justify-center mb-1 text-lg"><i class="fa-solid fa-wallet"></i></div>
+                        <span class="text-[10px] font-bold text-slate-600">Wallet</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl shadow-sm border border-gray-50/50">
+                        <div class="w-10 h-10 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center mb-1 text-lg"><i class="fa-solid fa-coins"></i></div>
+                        <span class="text-[10px] font-bold text-slate-600">Integral</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl shadow-sm border border-gray-50/50">
+                        <div class="w-10 h-10 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center mb-1 text-lg"><i class="fa-solid fa-headset"></i></div>
+                        <span class="text-[10px] font-bold text-slate-600">Service</span>
+                    </button>
+                    <button onclick="showScreen('messages')" class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl shadow-sm border border-gray-50/50">
+                        <div class="w-10 h-10 bg-purple-50 text-purple-500 rounded-xl flex items-center justify-center mb-1 text-lg"><i class="fa-regular fa-message"></i></div>
+                        <span class="text-[10px] font-bold text-slate-600">Message</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl shadow-sm border border-gray-50/50">
+                        <div class="w-10 h-10 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center mb-1 text-lg"><i class="fa-solid fa-shield-halved"></i></div>
+                        <span class="text-[10px] font-bold text-slate-600">Pin</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl shadow-sm border border-gray-50/50">
+                        <div class="w-10 h-10 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center mb-1 text-lg"><i class="fa-solid fa-book-open"></i></div>
+                        <span class="text-[10px] font-bold text-slate-600">Tutorial</span>
+                    </button>
+                </div>
+
+                <button onclick="showScreen('login')" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3.5 rounded-full text-center block mt-4 text-xs uppercase tracking-wider">
+                    Logout
+                </button>
+            </div>
+
+            <!-- ================= MESSAGE EMPTY SCREEN (Screenshot 13) ================= -->
+            <div id="screen-messages" class="screen hidden px-6 py-6 flex flex-col h-full bg-[#f4f7f9]">
+                <div class="flex items-center mb-6">
+                    <button onclick="switchTab('my')" class="text-emerald-800 text-xl"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h2 class="text-lg font-bold text-[#0a8f5c] mx-auto pr-6">Message</h2>
+                </div>
+
+                <div class="bg-white rounded-full p-1.5 flex justify-between items-center mb-5 border border-gray-150">
+                    <button class="w-1/2 bg-emerald-50 text-[#008652] font-bold text-xs py-2 rounded-full">Unread</button>
+                    <button class="w-1/2 text-gray-400 font-bold text-xs py-2 rounded-full">All</button>
+                </div>
+
+                <div class="flex-1 flex flex-col items-center justify-center text-center opacity-40">
+                    <i class="fa-regular fa-envelope-open text-5xl text-gray-300 mb-2"></i>
+                    <p class="text-xs text-gray-400">No Messages available</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FLOATING ROBOT CHAT ICON -->
+        <div id="chat-widget" class="absolute bottom-24 right-5 z-20 cursor-pointer hidden">
+            <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg border border-emerald-100">
+                <svg viewBox="0 0 100 100" class="w-8 h-8">
+                    <rect x="30" y="35" width="40" height="35" rx="10" fill="#008652"/>
+                    <circle cx="43" cy="50" r="4" fill="white"/>
+                    <circle cx="57" cy="50" r="4" fill="white"/>
+                    <line x1="50" y1="35" x2="50" y2="25" stroke="#008652" stroke-width="4"/>
+                    <circle cx="50" cy="22" r="5" fill="#fbc02d"/>
+                    <path d="M40 60 Q50 66 60 60" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- PERSISTENT BOTTOM NAVIGATION BAR -->
+        <div id="bottom-nav" class="hidden absolute bottom-0 left-0 right-0 h-20 bg-white border-t border-gray-100 flex justify-around items-center px-4 pb-2 z-15 shadow-[0_-4px_12px_rgba(0,0,0,0.02)]">
+            <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center text-[#008652]" id="nav-home">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[9px] font-bold mt-1">Home</span>
+            </button>
+            <button onclick="switchTab('payment')" class="nav-btn flex flex-col items-center text-gray-400" id="nav-payment">
+                <i class="fa-solid fa-credit-card text-lg"></i>
+                <span class="text-[9px] font-bold mt-1">Payment</span>
+            </button>
+            <button onclick="switchTab('tool')" class="relative flex flex-col items-center justify-center bg-[#fbc02d] text-slate-800 w-12 h-12 rounded-full -mt-6 shadow-lg shadow-yellow-500/20">
+                <i class="fa-solid fa-wallet text-lg"></i>
+            </button>
+            <button onclick="switchTab('statistics')" class="nav-btn flex flex-col items-center text-gray-400" id="nav-statistics">
+                <i class="fa-solid fa-chart-simple text-lg"></i>
+                <span class="text-[9px] font-bold mt-1">Statistics</span>
+            </button>
+            <button onclick="switchTab('my')" class="nav-btn flex flex-col items-center text-gray-400" id="nav-my">
+                <i class="fa-solid fa-user text-lg"></i>
+                <span class="text-[9px] font-bold mt-1">My</span>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- DYNAMIC ROUTER SCRIPT -->
+    <script>
+        // Smooth Splash transition flow
+        document.addEventListener("DOMContentLoaded", () => {
+            // Screen 1 Splash -> Screen 2 splash
+            setTimeout(() => {
+                document.getElementById('screen-splash-1').classList.add('hidden');
+                document.getElementById('screen-splash-2').classList.remove('hidden');
+                
+                // Screen 2 Splash -> Login Form
+                setTimeout(() => {
+                    document.getElementById('screen-splash-2').classList.add('hidden');
+                    document.getElementById('screen-login').classList.remove('hidden');
+                }, 1800);
+            }, 1800);
+        });
+
+        // Toggle Views
+        function showScreen(screenId) {
+            // Hide all sub-screens
+            document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('bottom-nav').classList.add('hidden');
+            document.getElementById('chat-widget').classList.add('hidden');
+
+            // Show targets
+            document.getElementById('screen-' + screenId).classList.remove('hidden');
+        }
+
+        // Login Handler
+        function handleLogin() {
+            // Hide Auth Screens
+            document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
+            
+            // Show Tabs & Main Layout
+            document.getElementById('bottom-nav').classList.remove('hidden');
+            document.getElementById('chat-widget').classList.remove('hidden');
+            switchTab('home');
+        }
+
+        // Tab Switcher
+        function switchTab(tabName) {
+            // Hide everything else
+            document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('bottom-nav').classList.remove('hidden');
+            document.getElementById('chat-widget').classList.remove('hidden');
+
+            // Show active tab
+            document.getElementById('tab-' + tabName).classList.remove('hidden');
+
+            // Set nav item styles
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-[#008652]');
+                btn.classList.add('text-gray-400');
+            });
+
+            const activeBtn = document.getElementById('nav-' + tabName);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-400');
+                activeBtn.classList.add('text-[#008652]');
+            }
+        }
+    </script>
+</body>
+</html>
